@@ -1,21 +1,21 @@
-package newSprint.login;
+package sprint.courier.login;
 
 import com.github.javafaker.Faker;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import model.CourierAccount;
-import newSprint.steps.Steps;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import steps.Steps;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static org.junit.Assert.assertEquals;
+public class LoginIncorrectAccountShowErrorTest {
 
-public class LoginIsNotCreatedUserShowErrorTest {
     private static final String ACCOUNT_ERROR = "Учетная запись не найдена";
 
     private final Faker faker = new Faker(new Locale("en"));
@@ -31,10 +31,14 @@ public class LoginIsNotCreatedUserShowErrorTest {
     }
 
     @Test
-    @DisplayName("Если авторизоваться под несуществующим пользователем, запрос возвращает ошибку")
-    public void loginIsNotCreatedUserShowError() {
-        ValidatableResponse response = steps.login(account);
-        assertEquals("Авторизация под несуществующим пользователем должна вернуть ошибку",
+    @DisplayName("система вернет ошибку, если неправильно указан логин или пароль")
+    public void loginIncorrectAccountShowError() {
+        steps.create(account);
+        CourierAccount wrongAccount = new CourierAccount(faker.funnyName().name(), account.getPassword(),
+                account.getFirstName());
+        testData.add(wrongAccount);
+        ValidatableResponse response = steps.login(wrongAccount);
+        Assert.assertEquals("Авторизация с неверным логином или паролем должна вернуть ошибку",
                 response.extract().body().jsonPath().getString("message"), ACCOUNT_ERROR);
     }
 

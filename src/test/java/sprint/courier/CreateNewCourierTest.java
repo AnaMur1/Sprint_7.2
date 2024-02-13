@@ -1,21 +1,21 @@
-package newSprint.courier;
+package sprint.courier.courier;
 
 import com.github.javafaker.Faker;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import model.CourierAccount;
-import newSprint.steps.Steps;
+import org.apache.http.HttpStatus;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import steps.Steps;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static org.junit.Assert.assertEquals;
-
-public class CreateNewCourierReturnBodyWithOkTest {
+public class CreateNewCourierTest {
     private final Faker faker = new Faker(new Locale("en"));
     private final Steps steps = new Steps();
     private CourierAccount account;
@@ -32,12 +32,12 @@ public class CreateNewCourierReturnBodyWithOkTest {
     }
 
     @Test
-    @DisplayName("Создание курьера - успешный запрос возвращает ok: true")
-    public void createNewCourierReturnBodyWithOk() {
+    @DisplayName("Создание курьера - курьера можно создать")
+    public void createNewCourierReturnSC_CREATED() {
         ValidatableResponse response = steps.create(account);
-        boolean expected = true;
-        boolean actual = response.extract().body().jsonPath().getBoolean("ok");
-        assertEquals("Успешный запрос возвращает ok: true", expected, actual);
+        Assert.assertEquals("Ждём 201",
+                response.extract().statusCode(),
+                HttpStatus.SC_CREATED);
     }
 
     @After

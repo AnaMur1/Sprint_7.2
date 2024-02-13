@@ -1,13 +1,11 @@
-package newSprint.order;
+package sprint.courier.order;
 
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import model.Orders;
-import newSprint.steps.Steps;
+import org.junit.Assert;
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import steps.Steps;
 
 public class OrdersTest {
     private final Steps steps = new Steps();
@@ -16,8 +14,7 @@ public class OrdersTest {
     @DisplayName("Список заказов - В тело ответа возвращается список заказов")
     public void ordersReturnsOrderList() {
         Response response = steps.orders();
-        assertThat("В тело ответа возвращается список заказов",
-                response.as(Orders.class).getOrders(),
-                notNullValue());
+        Assert.assertNotNull("В тело ответа возвращается список заказов",
+                response.as(Orders.class).getOrders());
     }
 }

@@ -1,24 +1,21 @@
-package newSprint.order;
+package sprint.courier.order;
 
 import com.github.javafaker.Faker;
 import io.restassured.response.ValidatableResponse;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import model.Order;
-import newSprint.steps.Steps;
 import org.apache.http.HttpStatus;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import steps.Steps;
 
 import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(JUnitParamsRunner.class)
 public class OrderTest {
@@ -55,11 +52,12 @@ public class OrderTest {
     @Test
     @Parameters(method = "testDataForOrder")
     public void createWithSetOfColorSuccessful(Order order) {
-        System.out.println(order.toString());
         response = steps.orderCreate(order);
-        assertThat("Данные создаются с любым параметром color и даже при его отсутствии",
-                response.extract().statusCode(), equalTo(HttpStatus.SC_CREATED));
-        assertThat("Тело ответа содержит \"track\"",
-                response.extract().body().jsonPath().getInt("track"), notNullValue());
+        Assert.assertEquals("Данные создаются с любым параметром color и даже при его отсутствии",
+                response.extract().statusCode(),
+                HttpStatus.SC_CREATED);
+
+        Assert.assertNotNull("Тело ответа содержит \"track\"",
+                response.extract().body().jsonPath().get("track"));
     }
 }

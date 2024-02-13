@@ -1,21 +1,18 @@
-package newSprint.courier;
+package sprint.courier;
 
 import com.github.javafaker.Faker;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import model.CourierAccount;
-import newSprint.steps.Steps;
+import org.junit.Assert;
+import steps.Steps;
 import org.apache.http.HttpStatus;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CreateNewCourierTest {
     private final Faker faker = new Faker(new Locale("en"));
@@ -37,9 +34,9 @@ public class CreateNewCourierTest {
     @DisplayName("Создание курьера - курьера можно создать")
     public void createNewCourierReturnSC_CREATED() {
         ValidatableResponse response = steps.create(account);
-        assertThat("Ждём 201",
+        Assert.assertEquals("Ждём 201",
                 response.extract().statusCode(),
-                equalTo(HttpStatus.SC_CREATED));
+                HttpStatus.SC_CREATED);
     }
 
     @After

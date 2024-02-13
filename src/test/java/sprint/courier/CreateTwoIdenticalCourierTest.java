@@ -1,19 +1,16 @@
-package newSprint.courier;
+package sprint.courier.courier;
 
 import com.github.javafaker.Faker;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import model.CourierAccount;
-import newSprint.steps.Steps;
 import org.apache.http.HttpStatus;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import steps.Steps;
 
 import java.util.Locale;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertNotEquals;
 
 public class CreateTwoIdenticalCourierTest {
     private final Faker faker = new Faker(new Locale("en"));
@@ -33,10 +30,11 @@ public class CreateTwoIdenticalCourierTest {
     public void createIdenticalAccountsForbidden() {
         ValidatableResponse createFirst = steps.create(account);
         int firstStatusCode = createFirst.extract().statusCode();
-        assertThat("Ожидаем код 201", firstStatusCode, equalTo(HttpStatus.SC_CREATED));
 
         ValidatableResponse createSecond = steps.create(account);
         int secondStatusCode = createSecond.extract().statusCode();
-        assertNotEquals("Статус код не должен быть 201", secondStatusCode, equalTo(HttpStatus.SC_CREATED));
+        Assert.assertNotEquals("Статус код не должен быть 201",
+                secondStatusCode,
+                HttpStatus.SC_CREATED);
     }
 }

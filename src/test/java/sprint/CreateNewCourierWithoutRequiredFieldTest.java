@@ -1,21 +1,18 @@
-package newSprint.courier;
+package sprint.courier;
 
 import com.github.javafaker.Faker;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import model.CourierAccount;
-import newSprint.steps.Steps;
+import org.junit.Assert;
+import steps.Steps;
 import org.apache.http.HttpStatus;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CreateNewCourierWithoutRequiredFieldTest {
     private final Faker faker = new Faker(new Locale("en"));
@@ -40,9 +37,9 @@ public class CreateNewCourierWithoutRequiredFieldTest {
         testData.add(account);
         account.setLogin(faker.funnyName().name());
         account.setFirstName(faker.name().firstName());
-        assertThat("Пароль обязательное поле, ждем 400 код",
+        Assert.assertEquals("Пароль обязательное поле, ждем 400 код",
                 steps.create(account).extract().statusCode(),
-                equalTo(HttpStatus.SC_BAD_REQUEST));
+                HttpStatus.SC_BAD_REQUEST);
     }
 
     @Test
@@ -52,9 +49,9 @@ public class CreateNewCourierWithoutRequiredFieldTest {
         testData.add(account);
         account.setPassword(faker.internet().password());
         account.setFirstName(faker.name().firstName());
-        assertThat("Логин обязательное поле, ждем 400 код",
+        Assert.assertEquals("Логин обязательное поле, ждем 400 код",
                 steps.create(account).extract().statusCode(),
-                equalTo(HttpStatus.SC_BAD_REQUEST));
+                HttpStatus.SC_BAD_REQUEST);
     }
 
     @Test
@@ -65,8 +62,9 @@ public class CreateNewCourierWithoutRequiredFieldTest {
         testData.add(account);
         account.setLogin(faker.funnyName().name());
         account.setPassword(faker.internet().password());
-        assertThat("Имя обязательное поле, ждем 400 код", steps.create(account).extract().statusCode(),
-                equalTo(HttpStatus.SC_BAD_REQUEST));
+        Assert.assertEquals("Имя обязательное поле, ждем 400 код",
+                steps.create(account).extract().statusCode(),
+                HttpStatus.SC_BAD_REQUEST);
     }
 
     @After

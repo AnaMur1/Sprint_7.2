@@ -1,21 +1,19 @@
-package newSprint.login;
+package sprint.courier.login;
 
 import com.github.javafaker.Faker;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import model.CourierAccount;
-import newSprint.steps.Steps;
 import org.apache.http.HttpStatus;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import steps.Steps;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class LoginCreateFieldlessReturnsError2Test {
 
@@ -40,9 +38,10 @@ public class LoginCreateFieldlessReturnsError2Test {
         testData.add(wrongAccount);
         wrongAccount = new CourierAccount();
         wrongAccount.setLogin(account.getLogin());
-        assertThat("Логин обязательное поле, ждем 400 код",
+
+        Assert.assertEquals("Логин обязательное поле, ждем 400 код",
                 steps.login(wrongAccount).extract().statusCode(),
-                equalTo(HttpStatus.SC_BAD_REQUEST));
+                HttpStatus.SC_BAD_REQUEST);
     }
 
     @After
